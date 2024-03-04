@@ -78,6 +78,7 @@ type UserBindTrader struct {
 	TraderId  uint64    `gorm:"type:int;not null"`
 	Amount    uint64    `gorm:"type:bigint(20);not null"`
 	Status    uint64    `gorm:"type:int;not null"`
+	InitOrder uint64    `gorm:"type:int;not null"`
 	CreatedAt time.Time `gorm:"type:datetime;not null"`
 	UpdatedAt time.Time `gorm:"type:datetime;not null"`
 }
@@ -417,6 +418,21 @@ func (b *BinanceUserRepo) UpdatesUserBindTraderStatusById(ctx context.Context, i
 	if err = b.data.DB(ctx).Table("user_bind_trader_two").Where("id=?", id).
 		Updates(map[string]interface{}{"status": status, "updated_at": now}).Error; nil != err {
 		return false, errors.NotFound("UPDATE_USER_BIND_TRADER_TWO_ERROR", "UPDATE_USER_BIND_TRADER_ERROR")
+	}
+
+	return true, nil
+}
+
+// UpdatesUserBindTraderStatusAndInitOrderById .
+func (b *BinanceUserRepo) UpdatesUserBindTraderStatusAndInitOrderById(ctx context.Context, id uint64, status uint64, initOrder uint64) (bool, error) {
+	var (
+		err error
+		now = time.Now()
+	)
+
+	if err = b.data.DB(ctx).Table("user_bind_trader").Where("id=?", id).
+		Updates(map[string]interface{}{"status": status, "init_order": initOrder, "updated_at": now}).Error; nil != err {
+		return false, errors.NotFound("UPDATE_USER_BIND_TRADER_ERROR", "UPDATE_USER_BIND_TRADER_ERROR")
 	}
 
 	return true, nil
@@ -986,6 +1002,7 @@ func (b *BinanceUserRepo) GetUserBindTraderByStatus(status uint64) (map[uint64][
 			TraderId:  v.TraderId,
 			Amount:    v.Amount,
 			Status:    v.Status,
+			InitOrder: v.InitOrder,
 			CreatedAt: v.CreatedAt,
 			UpdatedAt: v.UpdatedAt,
 		})
@@ -1018,6 +1035,7 @@ func (b *BinanceUserRepo) GetUserBindTraderMapByUserIds(userIds []uint64) (map[u
 			CreatedAt: v.CreatedAt,
 			UpdatedAt: v.UpdatedAt,
 			Status:    v.Status,
+			InitOrder: v.InitOrder,
 		})
 	}
 
