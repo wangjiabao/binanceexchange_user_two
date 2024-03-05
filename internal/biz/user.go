@@ -659,11 +659,12 @@ func (b *BinanceUserUsecase) UserBindTrader(ctx context.Context, users []*User) 
 			continue
 		}
 
+		num := 0
 		// 新增 和 更新
 		insertUserBindTrader := make([]*UserBindTrader, 0)
 		for k, v := range bindTrader {
 			// todo 分配暂时10人 1人100
-			if 9 < k {
+			if 9 < num {
 				break
 			}
 
@@ -672,6 +673,8 @@ func (b *BinanceUserUsecase) UserBindTrader(ctx context.Context, users []*User) 
 				TraderId: k,
 				Amount:   v.Amount,
 			})
+
+			num++
 		}
 
 		// 写入
@@ -819,10 +822,11 @@ func (b *BinanceUserUsecase) ReBindTrader(ctx context.Context) error {
 			}
 
 			// 新增 和 更新
+			num := 0
 			insertUserBindTrader := make([]*UserBindTrader, 0)
 			for k, v := range bindTrader {
 				// todo 分配暂时10人 1人100
-				if 9 < k {
+				if 9 < num {
 					break
 				}
 
@@ -831,6 +835,8 @@ func (b *BinanceUserUsecase) ReBindTrader(ctx context.Context) error {
 					TraderId: k,
 					Amount:   v.Amount,
 				})
+
+				num++
 			}
 
 			// 写入
@@ -952,9 +958,10 @@ func (b *BinanceUserUsecase) ReBindTrader(ctx context.Context) error {
 				continue
 			}
 
+			num := uint64(0)
 			insertUserBindTrader := make([]*UserBindTrader, 0)
 			for k, v := range bindTrader {
-				if 10-alreadyBindTraderCount <= k {
+				if 10-alreadyBindTraderCount <= num {
 					break
 				}
 
@@ -963,6 +970,8 @@ func (b *BinanceUserUsecase) ReBindTrader(ctx context.Context) error {
 					TraderId: k,
 					Amount:   v.Amount,
 				})
+
+				num++
 			}
 
 			// 写入
