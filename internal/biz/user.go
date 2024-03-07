@@ -12,6 +12,7 @@ import (
 	"github.com/go-kratos/kratos/v2/log"
 	"io"
 	"io/ioutil"
+	"math"
 	"math/big"
 	"net/http"
 	"strconv"
@@ -1046,7 +1047,7 @@ func (b *BinanceUserUsecase) ReBindTrader(ctx context.Context) error {
 							if 0 >= symbols[symbol].QuantityPrecision {
 								quantity = 1
 							} else {
-								quantity = 1 / float64(symbols[symbol].QuantityPrecision)
+								quantity = 1 / math.Pow10(int(symbols[symbol].QuantityPrecision))
 							}
 
 							for _, vVCurrentOrders := range vCurrentOrders {
@@ -1234,7 +1235,7 @@ func (b *BinanceUserUsecase) ChangeBindTrader(ctx context.Context) error {
 						if 0 >= symbols[symbol].QuantityPrecision {
 							quantity = 1
 						} else {
-							quantity = 1 / float64(symbols[symbol].QuantityPrecision)
+							quantity = 1 / math.Pow10(int(symbols[symbol].QuantityPrecision))
 						}
 
 						for _, vVCurrentOrders := range vCurrentOrders {
