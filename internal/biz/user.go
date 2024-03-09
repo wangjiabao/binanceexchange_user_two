@@ -1180,7 +1180,7 @@ func (b *BinanceUserUsecase) ChangeBindTrader(ctx context.Context) error {
 			selfUpdateBindTrader := make(map[uint64]uint64, 0)
 			for _, vUserBindTradersAll := range userBindTradersAll {
 				// 因为额度调整，自己换绑的不算
-				if 3 == userBindTradersAllMap[vUserBindTradersAll.TraderId].Status {
+				if 3 == vUserBindTradersAll.Status {
 					selfUpdateBindTrader[vUserBindTradersAll.TraderId] = vUserBindTradersAll.ID
 					continue
 				}
