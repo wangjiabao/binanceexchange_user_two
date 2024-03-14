@@ -1077,7 +1077,7 @@ func (b *BinanceUserRepo) GetUserBindTraderByTraderIds(traderIds []uint64) (map[
 func (b *BinanceUserRepo) GetUserBindAfterUnbindByUserIdAndTraderIdAndSymbol(ctx context.Context, userId uint64, traderId uint64, symbol string, positionSide string) (*biz.UserBindAfterUnbind, error) {
 	var userBindAfterUnbind *UserBindAfterUnbind
 	if err := b.data.DB(ctx).Table("user_bind_after_unbind_two").
-		Where("userId=? and trader_id=? and status=? and symbol=? and position_side=?", userId, traderId, 0, symbol, positionSide).
+		Where("user_id=? and trader_id=? and status=? and symbol=? and position_side=?", userId, traderId, 0, symbol, positionSide).
 		First(&userBindAfterUnbind).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, nil
